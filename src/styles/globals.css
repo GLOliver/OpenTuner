@@ -1,0 +1,61 @@
+:root {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: #f2f7f8;
+  background: #080d13;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-bg: #080d13;
+  --color-surface: #0e161e;
+  --color-surface-raised: #111c25;
+  --color-border: rgba(155, 188, 198, 0.12);
+  --color-muted: #778b95;
+  --color-soft: #a8bac0;
+  --color-accent: #62e4d1;
+  --color-accent-bright: #9af5e6;
+  --color-flat: #86b7d4;
+  --color-sharp: #efb780;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 38%, rgba(20, 66, 70, 0.19), transparent 44%),
+    var(--color-bg);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-accent-bright);
+  outline-offset: 4px;
+}
+
+::selection {
+  color: var(--color-bg);
+  background: var(--color-accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+}
