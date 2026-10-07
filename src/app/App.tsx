@@ -46,7 +46,6 @@ export function App({ controller: providedController }: AppProps) {
 
       <section className="tuner-card" aria-label="Chromatic tuner">
         <div className="tuner-card__heading">
-          <span className="eyebrow">PRECISION TUNING</span>
           <span
             className={`connection-indicator${active ? " connection-indicator--active" : ""}`}
           >

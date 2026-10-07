@@ -72,7 +72,10 @@ export function ReferenceFrequencyModal({
           {MIN_REFERENCE_FREQUENCY} and {MAX_REFERENCE_FREQUENCY} Hz.
         </p>
         <form onSubmit={handleSubmit}>
-          <label className="reference-modal__label" htmlFor="reference-frequency">
+          <label
+            className="reference-modal__label"
+            htmlFor="reference-frequency"
+          >
             A4 REFERENCE <span>(Hz)</span>
           </label>
           <input
@@ -94,7 +97,11 @@ export function ReferenceFrequencyModal({
             }}
           />
           {error && (
-            <p className="reference-modal__error" id="reference-frequency-error" role="alert">
+            <p
+              className="reference-modal__error"
+              id="reference-frequency-error"
+              role="alert"
+            >
               {error}
             </p>
           )}
@@ -106,7 +113,10 @@ export function ReferenceFrequencyModal({
             >
               CANCEL
             </button>
-            <button className="tuner-button reference-modal__confirm" type="submit">
+            <button
+              className="tuner-button reference-modal__confirm"
+              type="submit"
+            >
               CONFIRM
             </button>
           </div>

@@ -58,7 +58,10 @@ export class TunerController {
     const onPitch: PitchListener = (frequency) => {
       if (generation !== this.generation) return;
       if (this.state.phase !== "listening" && this.state.phase !== "tuning") return;
-      const pitch = frequency === null ? null : this.engine.processFrequency(frequency);
+      const pitch =
+        frequency === null
+          ? this.state.pitch
+          : (this.engine.processFrequency(frequency) ?? this.state.pitch);
       this.setState({
         phase: pitch ? "tuning" : "listening",
         pitch,

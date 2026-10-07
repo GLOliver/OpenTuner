@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { PitchListener, PitchSource } from "../features/tuner/application/pitchSource";
 import { TunerController } from "../features/tuner/application/tunerController";
@@ -37,11 +37,30 @@ describe("OpenTuner main screen", () => {
     fireEvent.click(screen.getByRole("button", { name: /start tuner/i }));
     expect(await screen.findByText("Listening...")).toBeInTheDocument();
 
-    source.emit(440);
+    act(() => source.emit(440));
     expect(await screen.findByText("A4")).toBeInTheDocument();
     expect(screen.getByText("440.0")).toBeInTheDocument();
     expect(screen.getByText("0 cents")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("IN TUNE");
+  });
+
+  it("holds the last detected note through brief gaps until the next pitch arrives", async () => {
+    const { source } = renderTuner();
+    fireEvent.click(screen.getByRole("button", { name: /start tuner/i }));
+    act(() => source.emit(440));
+
+    expect(await screen.findByText("440.0")).toBeInTheDocument();
+    act(() => source.emit(null));
+    expect(screen.getByText("A4")).toBeInTheDocument();
+    expect(screen.getByText("440.0")).toBeInTheDocument();
+    expect(screen.queryByText("Listening...")).not.toBeInTheDocument();
+
+    act(() => source.emit(442));
+    expect(screen.getByText("A4")).toBeInTheDocument();
+    expect(Number.parseFloat(screen.getByText(/440\./).textContent ?? "")).toBeCloseTo(
+      440.7,
+      1,
+    );
   });
 
   it.each([

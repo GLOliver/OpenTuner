@@ -1,6 +1,8 @@
 # OpenTuner
 
-OpenTuner is a focused, chromatic tuner web app. It listens to a device microphone and shows the nearest note, measured frequency, cents deviation, and whether the note is flat, in tune, or sharp. Audio analysis runs locally in the browser; there is no account, backend, or recording.
+OpenTuner is part of a series of self-hosted applications built using AI agents.
+
+It is an app designed for chromatic tuning. It uses the device's microphone to identify the nearest note, the measured frequency, and the deviation in cents (hundredths of a semitone), indicating whether the note is flat, in tune, or sharp. Audio analysis is performed locally; there is no need for an account, server-side processing, or audio recording—and, most importantly, it is free from advertisements.
 
 ## Stack
 
