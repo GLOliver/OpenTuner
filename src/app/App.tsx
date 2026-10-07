@@ -47,16 +47,24 @@ export function App({ controller: providedController }: AppProps) {
       <section className="tuner-card" aria-label="Chromatic tuner">
         <div className="tuner-card__heading">
           <span className="eyebrow">PRECISION TUNING</span>
-          <span className={`connection-indicator${active ? " connection-indicator--active" : ""}`}>
+          <span
+            className={`connection-indicator${active ? " connection-indicator--active" : ""}`}
+          >
             <span />
             {active ? "LISTENING" : "READY"}
           </span>
         </div>
 
-        <TunerGauge cents={pitch?.cents ?? null} status={pitch?.tuningStatus ?? null} />
+        <TunerGauge
+          cents={pitch?.cents ?? null}
+          status={pitch?.tuningStatus ?? null}
+        />
 
         <NoteDisplay pitch={pitch} listening={state.phase === "listening"} />
-        <TuningStatus cents={pitch?.cents ?? null} status={pitch?.tuningStatus ?? null} />
+        <TuningStatus
+          cents={pitch?.cents ?? null}
+          status={pitch?.tuningStatus ?? null}
+        />
 
         <FrequencyDisplay
           frequency={pitch?.frequency ?? null}
@@ -71,12 +79,16 @@ export function App({ controller: providedController }: AppProps) {
         )}
 
         <TunerButton active={active} onClick={toggle} />
-        <p className="permission-hint">Use headphones or reduce background noise for best results.</p>
+        <p className="permission-hint">
+          Use headphones or reduce background noise for best results.
+        </p>
       </section>
 
       <footer className="app-footer">
-        <span>Made for the music in you.</span>
-        <span>A4 <span aria-hidden="true">·</span> {referenceFrequency} Hz</span>
+        <span>SDG.</span>
+        <span>
+          A4 <span aria-hidden="true">·</span> {referenceFrequency} Hz
+        </span>
       </footer>
 
       {isReferenceModalOpen && (
