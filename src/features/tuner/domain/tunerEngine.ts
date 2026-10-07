@@ -1,4 +1,10 @@
-import { frequencyToMidi, midiToFrequency, midiToNote } from "./note";
+import {
+  frequencyToMidi,
+  isValidReferenceFrequency,
+  midiToFrequency,
+  midiToNote,
+  REFERENCE_FREQUENCY,
+} from "./note";
 import type { PitchResult } from "./pitchResult";
 import { getTuningStatus } from "./tuningStatus";
 
@@ -10,6 +16,20 @@ export class TunerEngine {
   private smoothedFrequency: number | null = null;
   private previousMidi: number | null = null;
 
+  constructor(private referenceFrequency = REFERENCE_FREQUENCY) {
+    if (!isValidReferenceFrequency(referenceFrequency)) {
+      throw new RangeError("Reference frequency must be from 1 to 1000 Hz.");
+    }
+  }
+
+  setReferenceFrequency(frequency: number): void {
+    if (!isValidReferenceFrequency(frequency)) {
+      throw new RangeError("Reference frequency must be from 1 to 1000 Hz.");
+    }
+    this.referenceFrequency = frequency;
+    this.reset();
+  }
+
   processFrequency(frequency: number): PitchResult | null {
     if (
       !Number.isFinite(frequency) ||
@@ -19,7 +39,8 @@ export class TunerEngine {
       return null;
     }
 
-    const midi = frequencyToMidi(frequency);
+    const midi = frequencyToMidi(frequency, this.referenceFrequency);
+    if (midi < 0 || midi > 127) return null;
     if (this.previousMidi !== midi || this.smoothedFrequency === null) {
       this.smoothedFrequency = frequency;
     } else {
@@ -28,7 +49,7 @@ export class TunerEngine {
     }
     this.previousMidi = midi;
 
-    const targetFrequency = midiToFrequency(midi);
+    const targetFrequency = midiToFrequency(midi, this.referenceFrequency);
     const cents = 1200 * Math.log2(this.smoothedFrequency / targetFrequency);
     return {
       note: midiToNote(midi),

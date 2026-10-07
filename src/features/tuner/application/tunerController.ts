@@ -1,4 +1,5 @@
 import type { PitchResult } from "../domain/pitchResult";
+import { isValidReferenceFrequency } from "../domain/note";
 import { TunerEngine } from "../domain/tunerEngine";
 import type { PitchListener, PitchSource } from "./pitchSource";
 
@@ -29,6 +30,21 @@ export class TunerController {
     this.listeners.add(listener);
     listener(this.state);
     return () => this.listeners.delete(listener);
+  }
+
+  setReferenceFrequency(frequency: number): void {
+    if (!isValidReferenceFrequency(frequency)) {
+      throw new RangeError("Reference frequency must be from 1 to 1000 Hz.");
+    }
+    this.engine.setReferenceFrequency(frequency);
+    const pitch = this.state.pitch
+      ? this.engine.processFrequency(this.state.pitch.frequency)
+      : null;
+    this.setState({
+      ...this.state,
+      phase: pitch ? "tuning" : this.state.phase,
+      pitch,
+    });
   }
 
   async start(): Promise<void> {

@@ -22,6 +22,8 @@ describe("chromatic note calculations", () => {
 
   it("calculates target frequencies using equal temperament", () => {
     expect(midiToFrequency(69)).toBe(440);
+    expect(frequencyToMidi(442, 442)).toBe(69);
+    expect(midiToFrequency(69, 442)).toBe(442);
     expect(midiToFrequency(57)).toBe(220);
     expect(midiToFrequency(60)).toBeCloseTo(261.6256, 3);
   });
@@ -30,6 +32,7 @@ describe("chromatic note calculations", () => {
     for (const frequency of [0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
       expect(() => frequencyToMidi(frequency)).toThrow(RangeError);
     }
+    expect(() => midiToFrequency(69, 0)).toThrow(RangeError);
     expect(() => midiToNote(128)).toThrow(RangeError);
     expect(() => midiToNote(60.5)).toThrow(RangeError);
   });
@@ -72,5 +75,15 @@ describe("TunerEngine", () => {
     engine.processFrequency(440);
     engine.reset();
     expect(engine.processFrequency(442)?.frequency).toBe(442);
+  });
+
+  it("applies a changed reference frequency to note and cents calculations", () => {
+    const engine = new TunerEngine();
+    engine.setReferenceFrequency(442);
+    const result = engine.processFrequency(442);
+    expect(result?.note).toMatchObject({ name: "A", octave: 4 });
+    expect(result?.targetFrequency).toBe(442);
+    expect(result?.cents).toBeCloseTo(0);
+    expect(() => engine.setReferenceFrequency(0)).toThrow(RangeError);
   });
 });

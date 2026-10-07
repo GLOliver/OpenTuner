@@ -59,7 +59,7 @@ e2e/                   Playwright smoke test
 ## Known limitations
 
 - Pitch detection is optimized for a clear, single fundamental and can be less reliable with strong harmonics, room noise, or very quiet sources.
-- The displayed reference is fixed at A4 = 440 Hz, and the in-tune tolerance is fixed at ±5 cents.
+- A4 reference frequency can be adjusted from 1 to 1000 Hz; the in-tune tolerance is fixed at ±5 cents.
 - Browser and device microphone quality affect measurement stability.
 
 ## React Native / Expo migration

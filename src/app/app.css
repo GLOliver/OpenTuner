@@ -327,9 +327,134 @@
 }
 
 .frequency-display__reference-value {
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: #bfcccf;
+  cursor: pointer;
   font-family: "DM Mono", monospace;
   font-size: 14px;
+  text-decoration: underline;
+  text-decoration-color: rgba(191, 204, 207, 0.34);
+  text-underline-offset: 4px;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+
+.frequency-display__reference-value:hover {
+  color: var(--color-accent-bright);
+  text-decoration-color: currentColor;
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 7, 10, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.reference-modal {
+  width: min(100%, 390px);
+  padding: 28px;
+  border: 1px solid rgba(155, 188, 198, 0.18);
+  border-radius: 21px;
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(24, 75, 76, 0.18), transparent 55%),
+    #101920;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.reference-modal h2 {
+  margin: 13px 0 8px;
+  color: #f2f7f8;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+}
+
+.reference-modal > p {
+  margin: 0 0 23px;
+  color: #9aabb1;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.reference-modal__label {
+  display: block;
+  margin-bottom: 8px;
+  color: #aebdc1;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+}
+
+.reference-modal__label span {
+  color: #778b95;
+}
+
+.reference-modal__input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid rgba(157, 188, 196, 0.2);
+  border-radius: 11px;
+  outline: none;
+  background: rgba(6, 12, 17, 0.65);
+  color: #f0f6f6;
+  font-family: "DM Mono", monospace;
+  font-size: 19px;
+}
+
+.reference-modal__input:focus {
+  border-color: rgba(98, 228, 209, 0.72);
+  box-shadow: 0 0 0 3px rgba(98, 228, 209, 0.1);
+}
+
+.reference-modal__input[aria-invalid="true"] {
+  border-color: rgba(239, 177, 167, 0.75);
+}
+
+.reference-modal__error {
+  margin: 9px 0 0;
+  color: #efb1a7;
+  font-size: 12px;
+}
+
+.reference-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 23px;
+}
+
+.reference-modal__cancel {
+  min-height: 46px;
+  padding: 0 17px;
+  border: 1px solid rgba(157, 188, 196, 0.16);
+  border-radius: 11px;
+  background: transparent;
+  color: #a8b7bc;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.reference-modal__cancel:hover {
+  border-color: rgba(157, 188, 196, 0.35);
+  color: #f2f7f8;
+}
+
+.reference-modal__confirm {
+  width: auto;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 11px;
+  font-size: 10px;
+  letter-spacing: 1.2px;
 }
 
 .frequency-display .eyebrow {

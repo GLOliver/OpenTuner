@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FrequencyDisplay } from "../components/FrequencyDisplay";
 import { NoteDisplay } from "../components/NoteDisplay";
+import { ReferenceFrequencyModal } from "../components/ReferenceFrequencyModal";
 import { TunerButton } from "../components/TunerButton";
 import { TunerGauge } from "../components/TunerGauge";
 import { TuningStatus } from "../components/TuningStatus";
@@ -21,6 +22,9 @@ export function App({ controller: providedController }: AppProps) {
   );
   const controller = providedController ?? defaultController;
   const { state, toggle } = useTuner(controller);
+  const [referenceFrequency, setReferenceFrequency] =
+    useState(REFERENCE_FREQUENCY);
+  const [isReferenceModalOpen, setIsReferenceModalOpen] = useState(false);
   const active = state.phase === "listening" || state.phase === "tuning";
   const pitch = state.pitch;
 
@@ -54,7 +58,11 @@ export function App({ controller: providedController }: AppProps) {
         <NoteDisplay pitch={pitch} listening={state.phase === "listening"} />
         <TuningStatus cents={pitch?.cents ?? null} status={pitch?.tuningStatus ?? null} />
 
-        <FrequencyDisplay frequency={pitch?.frequency ?? null} />
+        <FrequencyDisplay
+          frequency={pitch?.frequency ?? null}
+          referenceFrequency={referenceFrequency}
+          onEditReference={() => setIsReferenceModalOpen(true)}
+        />
 
         {state.error && (
           <p className="error-message" role="alert">
@@ -68,8 +76,20 @@ export function App({ controller: providedController }: AppProps) {
 
       <footer className="app-footer">
         <span>Made for the music in you.</span>
-        <span>A4 <span aria-hidden="true">·</span> {REFERENCE_FREQUENCY} Hz</span>
+        <span>A4 <span aria-hidden="true">·</span> {referenceFrequency} Hz</span>
       </footer>
+
+      {isReferenceModalOpen && (
+        <ReferenceFrequencyModal
+          frequency={referenceFrequency}
+          onCancel={() => setIsReferenceModalOpen(false)}
+          onConfirm={(frequency) => {
+            controller.setReferenceFrequency(frequency);
+            setReferenceFrequency(frequency);
+            setIsReferenceModalOpen(false);
+          }}
+        />
+      )}
     </main>
   );
 }

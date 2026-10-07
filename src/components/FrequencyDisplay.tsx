@@ -1,10 +1,14 @@
-import { REFERENCE_FREQUENCY } from "../features/tuner/domain/note";
-
 interface FrequencyDisplayProps {
   frequency: number | null;
+  referenceFrequency: number;
+  onEditReference: () => void;
 }
 
-export function FrequencyDisplay({ frequency }: FrequencyDisplayProps) {
+export function FrequencyDisplay({
+  frequency,
+  referenceFrequency,
+  onEditReference,
+}: FrequencyDisplayProps) {
   return (
     <div className="frequency-display">
       <div className="frequency-display__reading" aria-live="polite" aria-atomic="true">
@@ -16,9 +20,14 @@ export function FrequencyDisplay({ frequency }: FrequencyDisplayProps) {
       </div>
       <div className="frequency-display__reference">
         <span className="eyebrow">REFERENCE</span>
-        <span className="frequency-display__reference-value">
-          {REFERENCE_FREQUENCY} Hz
-        </span>
+        <button
+          className="frequency-display__reference-value"
+          type="button"
+          onClick={onEditReference}
+          aria-label={`Edit reference frequency, currently ${referenceFrequency} hertz`}
+        >
+          {referenceFrequency} Hz
+        </button>
       </div>
     </div>
   );

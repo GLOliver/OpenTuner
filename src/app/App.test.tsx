@@ -75,4 +75,44 @@ describe("OpenTuner main screen", () => {
       "Microphone access was denied",
     );
   });
+
+  it("opens the reference editor and updates the tuner when confirmed", async () => {
+    const { source } = renderTuner();
+    fireEvent.click(screen.getByRole("button", { name: /edit reference frequency/i }));
+
+    const dialog = screen.getByRole("dialog", { name: "Reference frequency" });
+    const input = screen.getByRole("spinbutton", { name: /a4 reference/i });
+    expect(input).toHaveValue(440);
+    expect(input).toHaveAttribute("min", "1");
+    expect(input).toHaveAttribute("max", "1000");
+
+    fireEvent.click(screen.getByRole("button", { name: /confirm/i }));
+    expect(dialog).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /currently 440 hertz/i })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /start tuner/i }));
+    source.emit(440);
+    expect(await screen.findByText("0 cents")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /edit reference frequency/i }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: /a4 reference/i }), {
+      target: { value: "442" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /confirm/i }));
+
+    expect(screen.getByRole("button", { name: /currently 442 hertz/i })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("FLAT");
+    expect(screen.getByText("-8 cents")).toBeInTheDocument();
+  });
+
+  it("closes the reference editor without changing the value when cancelled", () => {
+    renderTuner();
+    fireEvent.click(screen.getByRole("button", { name: /edit reference frequency/i }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: /a4 reference/i }), {
+      target: { value: "450" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /cancel/i }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /currently 440 hertz/i })).toBeInTheDocument();
+  });
 });
